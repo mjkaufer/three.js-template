@@ -61,7 +61,7 @@
             context.fill();
 					}
 				});//a basic particle material
-				
+
 				//rest of your setup here
 
 				renderer = new THREE.CanvasRenderer();
@@ -84,7 +84,7 @@
         color = color || new THREE.Color();
         var group = new THREE.Object3D();
 
-        
+
         //center should be 0, so offset should be -1 * dispersion * (size / 2.0)
         var o = -1 * dispersion * (size / 2.0) + dispersion / 2.0;//I don't know why I need the last thing, but oh well...
         var offsetVector = new THREE.Vector3(o, o, o);
@@ -110,7 +110,7 @@
       }
 
       function demo2(size){//size of grid
-        clearScene();        
+        clearScene();
         size = size || 5;
         var freq = 125;
         var matrix = new Array(size);
@@ -139,6 +139,13 @@
         variableFunction = function(){
           for(var i in group.children)
             group.children[i].zFunc();
+          var h = Math.sin(count/freq * Math.PI * 2 / 20) / 2 + .5;
+          var h2 = (h + .5) % 1;
+          var c1 = new THREE.Color().setHSL(h, 0.5, 0.5);
+          var c2 = new THREE.Color().setHSL(h2, 0.5, 0.5);
+          renderer.setClearColor(c1, 1);
+          particleMaterial.color.set(c2);
+
         }
 
         return group;

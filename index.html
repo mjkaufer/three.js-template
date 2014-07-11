@@ -53,9 +53,12 @@
 				particleMaterial = new THREE.ParticleCanvasMaterial({
 					color: 0xffffff,
 					program: function(context){
-						context.beginPath();
-						context.arc(0, 0, 1, 0, PI2, true);
-						context.fill();
+						// context.beginPath();
+						// context.arc(0, 0, 1, 0, PI2, true);
+						// context.fill();
+            context.beginPath();
+            context.rect(-0.5,-0.5, 1, 1)
+            context.fill();
 					}
 				});//a basic particle material
 				

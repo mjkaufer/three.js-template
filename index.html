@@ -25,7 +25,7 @@
 
 		<script>
 			var container;
-			var camera, scene, renderer;
+			var camera, scene, renderer, controls;
 			var mouseX, mouseY;
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
@@ -44,6 +44,8 @@
 
 				scene = new THREE.Scene();//scene setup
 
+        controls = new THREE.TrackballControls(camera);//sets up controls
+        
 				var PI2 = Math.PI * 2;//constant for 2pi
 
 				particleMaterial = new THREE.ParticleCanvasMaterial({

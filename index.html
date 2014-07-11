@@ -30,6 +30,7 @@
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
 			var particleMaterial; //an example particle material to use
+      var count;//increases each call of render
       var variableFunction = function(){};//to make different things happen in random
 			//declare other vars here
 			init();
@@ -46,7 +47,7 @@
 				scene = new THREE.Scene();//scene setup
 
         controls = new THREE.TrackballControls(camera);//sets up controls
-
+        count = 0;
 				var PI2 = Math.PI * 2;//constant for 2pi
 
 				particleMaterial = new THREE.ParticleCanvasMaterial({
@@ -102,6 +103,42 @@
           group.rotation.y += rY;
           group.rotation.z += rZ;
         }
+        return group;
+      }
+
+      function demo2(size){//size of grid
+        clearScene();        
+        size = size || 5;
+        var freq = 125;
+        var matrix = new Array(size);
+        var dispersion = 20;
+        var particleSize = 5;
+        var o = -1 * dispersion * (size / 2.0) + dispersion / 2.0;
+        var offsetVector = new THREE.Vector3(o, o, o);
+        var modelParticle = new THREE.Particle(particleMaterial);
+        var group = new THREE.Object3D();
+        modelParticle.scale.x = modelParticle.scale.y = particleSize;
+
+        for(var x = 0; x < matrix.length; x++){
+          matrix[x] = new Array(size);
+          for(var y = 0; y < matrix[0].length; y++){
+            matrix[x][y] = modelParticle.clone();
+            matrix[x][y].position = new THREE.Vector3(dispersion * x, 0, dispersion * y).add(offsetVector);
+            matrix[x][y].vars = {x:x, y:y};
+
+            matrix[x][y].zFunc = function(){
+              this.position.y = size * Math.sin(count * Math.PI * 2 / freq + this.vars.x * Math.PI * 2 / size + this.vars.y * Math.PI * 2 / size)
+            }
+            group.add(matrix[x][y]);
+          }
+        }
+        scene.add(group);
+        variableFunction = function(){
+          for(var i in group.children)
+            group.children[i].zFunc();
+        }
+
+        return group;
       }
 
 			function onWindowResize(){
@@ -125,9 +162,10 @@
 			function render(){
 				camera.lookAt(scene.position);
 				//stuff you want to happen continuously here
-        variableFunction();
+        variableFunction();//so you can dynamically do stuff within the demos
 				controls.update();
 				renderer.render(scene, camera);
+        count++;
 			}
 
 		</script>
